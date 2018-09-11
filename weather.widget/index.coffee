@@ -1,20 +1,19 @@
 options =
-  city          : "Troy"       # default city in case location detection fails
-  region        : "NY"              # default region in case location detection fails
+  city          : "Olathe"       # default city in case location detection fails
+  region        : "KS"              # default region in case location detection fails
   units         : 'f'               # c for celcius. f for Fahrenheit
-  staticLocation: false             # set to true to disable autmatic location lookup
 
 appearance =
   iconSet       : 'original'        # "original" for the original icons, or "yahoo" for yahoo icons
-  color         : '#fff'            # configure your colors here
-  darkerColor   : 'rgba(#fff, 0.8)'
+  color         : '#0d67b5'            # configure your colors here
+  darkerColor   : 'rgba(#0d67b5, 0.8)'
   baseFontSize  : 42                # the base font size, the size of the temperature
   showLocation  : true              # set to true to show your current location in the widget
   showDay       : true              # set to true to show the current day of the week
   showWeatherText: true             # set to true to show the text label for the weather
   showForecast  : true              # set to true to show the 5 day forecast
 
-refreshFrequency: 600000            # Update every 10 minutes
+refreshFrequency: 900000            # Update every 15 minutes
 
 style: """
   top  : 10px
@@ -58,7 +57,7 @@ style: """
 
   @font-face
     font-family Weather
-    src url(weather.widget/icons.svg) format('svg')
+    src url(weather-widget/weather.widget/icons.svg) format('svg')
 
   icon-size = #{appearance.baseFontSize * 2.86}px
 
@@ -149,11 +148,10 @@ style: """
       font-size: #{appearance.baseFontSize * .33}px
 """
 
-command: "$(ps -o comm= $PPID | sed -e 's/UM-LM\^H/Ü/') weather.widget/get-weather \
+command: "$(ps -o comm= $PPID | sed -e 's/UM-LM\^H/Ü/') weather-widget/weather.widget/get-weather \
                             \"#{options.city}\" \
                             \"#{options.region}\" \
-                            #{options.units} \
-                            #{'static' if options.staticLocation}"
+                            #{options.units}"
 
 appearance: appearance
 
@@ -184,7 +182,7 @@ update: (output, domEl) ->
   data    = JSON.parse(output)
   channel = data?.query?.results?.channel
 
-  if channel 
+  if channel
     delete localStorage.cachedOutput
     localStorage.setItem("cachedOutput", output)
   else

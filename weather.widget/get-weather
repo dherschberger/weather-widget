@@ -10,34 +10,14 @@ var http = require('http'),
 var options = {
     city: process.argv[2],
     region: process.argv[3],
-    units: process.argv[4].toLowerCase(),
-    static: process.argv[5] === 'static'
+    units: process.argv[4].toLowerCase()
 };
 
 var weatherRetryCounter = 0;
 
-getLocation(function(location) {
-    if (location.city) {
-        options.region = location.region;
-        options.city = location.city;
-    }
-    getWeather(options, function(data) {
-        retryGetWeatherOrPrintResults(data);
-    });
+getWeather(options, function(data) {
+    retryGetWeatherOrPrintResults(data);
 });
-
-function getLocation(callback) {
-    if (options.static) return callback({});
-
-    var request = getJSON("http://ip-api.com/json", callback);
-
-    request.on('error', function() {
-        callback({})
-    });
-    setTimeout(function() {
-        request.abort();
-    }, 3000);
-}
 
 function printResults(data) {
     data.location = options.city + ', ' + options.region;
@@ -49,7 +29,7 @@ function retryGetWeatherOrPrintResults(data) {
     try {
         results = data.query.results;
     } catch (ignore) { }
-    
+
     if (results == null && weatherRetryCounter < 5) {
         weatherRetryCounter++;
         getWeather(options, function(data) {

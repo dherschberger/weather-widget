@@ -1,5 +1,7 @@
 # Übersicht Weather Widget
 
+Note: Removed geoip abilities as of 2018-09-10. Original authors README below.
+
 Made for [Übersicht](http://tracesof.net/uebersicht/)
 
 Uses the [freegeoip.net](http://freegeoip.net/ "freegeoip.net") api to obtain your location, and the [Yahoo Weather api](https://developer.yahoo.com/weather// "Yahoo Weather api") to obtain the weather information.
